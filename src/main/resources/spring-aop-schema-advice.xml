@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/aop   
+                        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="gittoyAspect" class="com.gittoy.aop.schema.advice.GittoyAspect"></bean>
+	<bean id="aspectBiz" class="com.gittoy.aop.schema.advice.biz.AspectBiz"></bean>
+
+	<aop:config>
+		<aop:aspect id="gittoyAspectAOP" ref="gittoyAspect">
+<!-- 			<aop:pointcut expression="execution(* com.gittoy.aop.schema.advice.biz.*Biz.*(..))" id="gittoyPointcut"/>
+			<aop:before method="before" pointcut-ref="gittoyPointcut"/>
+			<aop:after-returning method="afterReturning" pointcut-ref="gittoyPointcut"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="gittoyPointcut"/>
+			<aop:after method="after" pointcut-ref="gittoyPointcut"/>
+			<aop:around method="around" pointcut-ref="gittoyPointcut"/>
+			<aop:around method="aroundInit" pointcut="execution(* com.gittoy.aop.schema.advice.biz.AspectBiz.init(String, int)) and args(bizName, times)"/> -->
+			<aop:declare-parents types-matching="com.gittoy.aop.schema.advice.biz.*(+)"
+				implement-interface="com.gittoy.aop.schema.advice.Fit"
+				default-impl="com.gittoy.aop.schema.advice.FitImpl"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="bizLogicImplTarget" class="com.gittoy.aop.api.BizLogicImpl"></bean>
+	<bean id="gittoyBeforeAdvice" class="com.gittoy.aop.api.GittoyBeforeAdvice"></bean>
+	<bean id="gittoyAfterReturningAdvice" class="com.gittoy.aop.api.GittoyAfterReturningAdvice"></bean>
+	<bean id="gittoyMethodInterceptor" class="com.gittoy.aop.api.GittoyMethodInterceptor"></bean>
+	<bean id="gittoyThrowsAdvice" class="com.gittoy.aop.api.GittoyThrowsAdvice"></bean>
+	<bean id="pointcutBean" class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedNames">
+			<list>
+				<value>sa*</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="defaultAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="gittoyBeforeAdvice" />
+		<property name="pointcut" ref="pointcutBean" />
+	</bean>
+
+	<bean id="bizLogicImpl" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="bizLogicImplTarget"/>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>defaultAdvisor</value>
+				<value>gittoyAfterReturningAdvice</value>
+				<value>gittoyMethodInterceptor</value>
+				<value>gittoyThrowsAdvice</value>
+			</list>
+		</property>
+	</bean>
+</beans>
